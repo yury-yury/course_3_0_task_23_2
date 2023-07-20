@@ -5,8 +5,6 @@ from django.shortcuts import render
 from catalog.models import Product, Contact
 
 
-# Create your views here.
-
 def main(request):
     if request.method == 'GET':
         result = Product.objects.all()
@@ -16,7 +14,7 @@ def main(request):
 
 def contact(request):
     if request.method == 'POST':
-        visiter = dict()
+        visiter: Dict[str, Any] = dict()
         visiter['name'] = request.POST.get('name', None)
         visiter['phone'] = request.POST.get('phone', None)
         visiter['message'] = request.POST.get('message', None)

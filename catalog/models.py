@@ -55,3 +55,14 @@ class Contact(models.Model):
     country = models.CharField(max_length=100)
     inn = models.CharField(max_length=12)
     address = models.CharField(max_length=200)
+
+    class Meta:
+        """
+        The Meta class contains the common name of the model instance in the singular and plural used
+        in the administration panel.
+        """
+        verbose_name: str = "Контакт"
+        verbose_name_plural: str = "Контакты"
+
+    def __str__(self) -> str:
+        return f"{self.country} ({self.address})"
