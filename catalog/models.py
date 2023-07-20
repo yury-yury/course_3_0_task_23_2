@@ -18,6 +18,7 @@ class Category(models.Model):
         verbose_name_plural: str = "Категории"
 
 
+
 class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
@@ -47,3 +48,10 @@ class Product(models.Model):
         """
         verbose_name: str = "Продукт"
         verbose_name_plural: str = "Продукты"
+        ordering = ["-created_at"]
+
+
+class Contact(models.Model):
+    country = models.CharField(max_length=100)
+    inn = models.CharField(max_length=12)
+    address = models.CharField(max_length=200)

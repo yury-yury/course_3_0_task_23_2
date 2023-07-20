@@ -2,7 +2,7 @@ from typing import Tuple
 
 from django.contrib import admin
 
-from catalog.models import Category, Product
+from catalog.models import Category, Product, Contact
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -28,3 +28,4 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
+admin.site.register(Contact)
