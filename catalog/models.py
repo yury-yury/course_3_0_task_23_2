@@ -5,7 +5,6 @@ from django.utils import timezone
 class Category(models.Model):
     name = models.CharField(max_length=150)
     description = models.TextField()
-    created_at = models.DateField()
 
 
 class Product(models.Model):
