@@ -9,7 +9,8 @@ def main(request):
     if request.method == 'GET':
         result = Product.objects.all()
         print(result[:5])
-        return render(request, 'catalog/home.html')
+        context = {"data": result}
+        return render(request, 'catalog/home.html', context)
 
 
 def contact(request):
