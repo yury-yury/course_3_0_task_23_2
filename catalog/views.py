@@ -22,3 +22,9 @@ def contact(request):
 
     data: Dict[str, Any] = {"data": Contact.objects.get(pk=1)}
     return render(request, 'catalog/contact.html', context=data)
+
+def detail_product(request, pk: int):
+    if request.method == 'GET':
+        product = Product.objects.get(pk=pk)
+        data: Dict[str, Any] = {"data": product}
+        return render(request, 'catalog/product_detail.html', context=data)

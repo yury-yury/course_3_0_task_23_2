@@ -1,0 +1,56 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}
+Информация о продукте
+{% endblock %}
+
+{% block title_for_page %}
+Информация о продукте
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row text-start">
+        <div class="col-lg-9 col-md-6 col-sm-12">
+            <div class="card mb-4 box-shadow">
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <tr>
+                            <img style="width: 100%" src="{{ MEDIA_URL }}{{ data.image.url }}"/>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Название</td>
+                            <td>{{ data.name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Описание</td>
+                            <td>{{ data.description }}</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">ID товара</td>
+                            <td>{{ data.id }}</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Категория</td>
+                            <td>{{ data.category }}</td>
+                        </tr>
+                        <tr>
+                            <td class="w-25">Цена</td>
+                            <td>{{ data.price }}</td>
+                        </tr>
+                         <tr>
+                            <td class="w-25">Создан</td>
+                            <td>{{ data.created_at }}</td>
+                        </tr>
+                         <tr>
+                            <td class="w-25">Обнавлен</td>
+                            <td>{{ data.updated_at }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
