@@ -1,12 +1,6 @@
 {% extends 'catalog/base.html' %}
 
-{% block title %}
-Информация о продукте
-{% endblock %}
-
-{% block title_for_page %}
-Информация о продукте
-{% endblock %}
+{% load my_tags %}
 
 {% block body %}
 <div class="container">
@@ -15,8 +9,9 @@
             <div class="card mb-4 box-shadow">
                 <div class="card-body">
                     <table class="table table-striped">
-                        <tr>
-                            <img style="width: 100%" src="{{ MEDIA_URL }}{{ data.image.url }}"/>
+                        <tr class="align-self-lg-center">
+                            <!--<img class="card-img-top mb-2" style="width: 75%" src="{{ data.image | mediapath }}"/>-->
+                            <img class="card-img-top mb-2" style="width: 75%" src="{%  mediafile data.image %}"/>
                         </tr>
                         <tr>
                             <td class="w-25">Название</td>

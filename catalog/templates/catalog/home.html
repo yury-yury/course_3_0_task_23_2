@@ -1,15 +1,8 @@
 {% extends 'catalog/base.html' %}
 
-{% block title %}
-Каталог товаров
-{% endblock %}
-
-{% block title_for_page %}
-Каталог товаров
-{% endblock %}
+{% load my_tags %}
 
 {% block body %}
-
 <div class="container">
     <div class="row text-center">
         {% for item in data %}
@@ -19,13 +12,14 @@
                     <h4 class="my-0 font-weight-normal">{{ item.name }}</h4>
                 </div>
                 <div class="card-body">
-                    <a href="/product/{{ item.id }}">
-                    <img style="width: 100%" src="{{ MEDIA_URL }}{{ item.image.url }}"/>
+                    <a href="{% url 'catalog:product' item.id %}">
+                    <!--<img alt="Фото товара" style="width: 75%" src="{{ item.image|mediapath }}"/>-->
+                    <img alt="Фото товара" style="width: 75%" src="{% mediafile item.image %} "/>
                     </a>
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
-                        <li>{{ item.category }}</li>
-                        <li>{{ item.description|truncatechars:100 }}</li>
-                        <li>{{item.price }}</li>
+                        <li>Категория: {{ item.category }}</li>
+                        <li>Описание: {{ item.description|truncatechars:100 }}</li>
+                        <li>Цена: {{item.price }}</li>
                     </ul>
                 </div>
             </div>
@@ -33,42 +27,27 @@
     {% endfor %}
     </div>
 </div>
+    <nav aria-label="...">
+  <ul class="pagination">
+      {% if not previous_page %}
+          <li class="page-item disabled">
+      <a class="page-link" >Предыдущая</a>
+    </li>
+      {% else %}
+          <li class="page-item">
+      <a class="page-link" href="{% url 'catalog:catalog' %}?page={{ previous_page }}">Предыдущая</a>
+    </li>
+      {% endif %}
 
+    {% if next_page %}
+    <li class="page-item">
+      <a class="page-link" href="{% url 'catalog:catalog' %}?page={{ next_page }}">Следующая</a>
+    </li>
+    {% else %}
+        <li class="page-item disabled">
+      <a class="page-link">Следующая</a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
 {% endblock %}
-
-<section class="py-5 text-center container">
-    <div class="row py-lg-5">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Album example</h1>
-        <p class="lead text-body-secondary">Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don’t simply skip over it entirely.</p>
-        <p>
-          <a href="#" class="btn btn-primary my-2">Main call to action</a>
-          <a href="#" class="btn btn-secondary my-2">Secondary action</a>
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <div class="album py-5 bg-body-tertiary">
-    <div class="container">
-
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col">
-          <div class="card shadow-sm">
-            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-            <div class="card-body">
-              <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                  <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
