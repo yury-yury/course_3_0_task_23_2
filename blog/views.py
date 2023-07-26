@@ -52,13 +52,11 @@ class BlogEntryDetailView(DetailView):
 class BlogEntryUpdateView(UpdateView):
     model = BlogEntry
     fields = ('title', 'content', 'preview', 'published')
-    # success_url = reverse_lazy('blog:list')
 
     def form_valid(self, form):
         if form.is_valid:
             new = form.save()
             new.slug = slugify(new.title)
-            # new.slug = new.title.strip().lower().replace(' ', '_')
             new.save()
         return super().form_valid(form)
 
