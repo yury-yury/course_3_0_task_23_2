@@ -16,6 +16,7 @@
     <h5 class="my-0 mr-md-auto font-weight-normal">Skystore</h5>
     <nav class="ms-5">
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:catalog' %}">Каталог</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'blog:list' %}">Блог</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contact' %}">Контакты</a>
     </nav>
 </div>
@@ -24,10 +25,11 @@
     <h1 class="display-4">Skystore</h1>
     <p class="lead">{{ title }}</p>
 </div>
-
+<div class="container">
 {% block body %}
 
 {% endblock %}
+</div>
     <footer class="pt-4 my-md-5 pt-md-5 border-top">
         <div class="row">
             <div class="col-12 col-md">

@@ -2,13 +2,13 @@ from django.db import models
 
 
 class BlogEntry(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, verbose_name='Заголовок')
     slug = models.CharField(max_length=100)
-    content = models.CharField(max_length=250)
-    preview = models.ImageField(upload_to='blog', blank=True)
+    content = models.CharField(max_length=250, verbose_name='Содержание')
+    preview = models.ImageField(upload_to='blog', blank=True, verbose_name='Превью')
     created_at = models.DateField(auto_now_add=True, verbose_name="Дата создания")
-    published = models.BooleanField()
-    views_count = models.IntegerField()
+    published = models.BooleanField(default=True, verbose_name='Признак публикации')
+    views_count = models.IntegerField(default=0)
 
     def __str__(self) -> str:
         return f"{self.title}"

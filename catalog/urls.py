@@ -1,5 +1,4 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
 from catalog.apps import CatalogConfig
 from catalog.views import contact, ProductListView, ProductDetailView
