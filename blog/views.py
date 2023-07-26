@@ -42,8 +42,8 @@ class BlogEntryDetailView(DetailView):
         self.object.views_count += 1
         self.object.save()
 
-        if self.object.views_count == 10:
-            send_mail(f'Поздравление!', 'Ваша запись блога набрала 100 просмотров. Примите поздравления',
+        if self.object.views_count == 100:
+            send_mail('Поздравление!', f'Ваша запись блога {self.object.title} набрала 100 просмотров. Примите поздравления',
                       DEFAULT_FROM_EMAIL, RECIPIENTS_EMAIL)
 
         return self.object
