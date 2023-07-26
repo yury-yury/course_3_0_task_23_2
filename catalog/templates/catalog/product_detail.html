@@ -10,36 +10,36 @@
                 <div class="card-body">
                     <table class="table table-striped">
                         <tr class="align-self-lg-center">
-                            <!--<img class="card-img-top mb-2" style="width: 75%" src="{{ data.image | mediapath }}"/>-->
-                            <img class="card-img-top mb-2" style="width: 75%" src="{%  mediafile data.image %}"/>
+                            <!--<img class="card-img-top mb-2" style="width: 75%" src="{{ object.image | mediapath }}"/>-->
+                            <img class="card-img-top mb-2" style="width: 75%" src="{%  mediafile object.image %}"/>
                         </tr>
                         <tr>
                             <td class="w-25">Название</td>
-                            <td>{{ data.name }}</td>
+                            <td>{{ object.name }}</td>
                         </tr>
                         <tr>
                             <td class="w-25">Описание</td>
-                            <td>{{ data.description }}</td>
+                            <td>{{ object.description }}</td>
                         </tr>
                         <tr>
                             <td class="w-25">ID товара</td>
-                            <td>{{ data.id }}</td>
+                            <td>{{ object.id }}</td>
                         </tr>
                         <tr>
                             <td class="w-25">Категория</td>
-                            <td>{{ data.category }}</td>
+                            <td>{{ object.category }}</td>
                         </tr>
                         <tr>
                             <td class="w-25">Цена</td>
-                            <td>{{ data.price }}</td>
+                            <td>{{ object.price }}</td>
                         </tr>
                          <tr>
                             <td class="w-25">Создан</td>
-                            <td>{{ data.created_at }}</td>
+                            <td>{{ object.created_at }}</td>
                         </tr>
                          <tr>
-                            <td class="w-25">Обнавлен</td>
-                            <td>{{ data.updated_at }}</td>
+                            <td class="w-25">Обновлен</td>
+                            <td>{{ object.updated_at }}</td>
                         </tr>
                     </table>
                 </div>
