@@ -1,8 +1,10 @@
+from django.core.mail import send_mail
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from pytils.translit import slugify
 
 from blog.models import BlogEntry
+from internet_shop.settings import DEFAULT_FROM_EMAIL, RECIPIENTS_EMAIL
 
 
 ITEM_ON_PAGE = 4
@@ -35,10 +37,15 @@ class BlogEntryListView(ListView):
 class BlogEntryDetailView(DetailView):
     model = BlogEntry
 
-    def get_object(self, queryset=None):
+    def get_object(self, queryset=None) -> BlogEntry:
         self.object = super().get_object(queryset)
         self.object.views_count += 1
         self.object.save()
+
+        if self.object.views_count == 10:
+            send_mail(f'Поздравление!', 'Ваша запись блога набрала 100 просмотров. Примите поздравления',
+                      DEFAULT_FROM_EMAIL, RECIPIENTS_EMAIL)
+
         return self.object
 
 
