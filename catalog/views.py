@@ -33,7 +33,6 @@ class ProductCreateView(CreateView):
 
 class ProductListView(ListView):
     model = Product
-    template_name = 'catalog/home.html'
     paginate_by = ITEM_ON_PAGE
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -44,7 +43,6 @@ class ProductListView(ListView):
 
 class ProductDetailView(DetailView):
     model = Product
-    template_name = 'catalog/product_detail.html'
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
