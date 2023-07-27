@@ -23,6 +23,11 @@ class BlogEntryCreateView(CreateView):
             new.save()
         return super().form_valid(form)
 
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(object_list=None, **kwargs)
+        data['title'] = "Создание новой записи блога."
+        return data
+
 
 class BlogEntryListView(ListView):
     model = BlogEntry
@@ -32,6 +37,11 @@ class BlogEntryListView(ListView):
         queryset = super().get_queryset()
         queryset = queryset.filter(published=True)
         return queryset
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        data = super().get_context_data(object_list=None, **kwargs)
+        data['title'] = f"Список записей блога, стр. {data['page_obj'].number} из {data['page_obj'].paginator.num_pages}"
+        return data
 
 
 class BlogEntryDetailView(DetailView):
@@ -48,6 +58,11 @@ class BlogEntryDetailView(DetailView):
 
         return self.object
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['title'] = f'Просмотр записи блога {data["object"].title}'
+        return data
+
 
 class BlogEntryUpdateView(UpdateView):
     model = BlogEntry
@@ -63,7 +78,17 @@ class BlogEntryUpdateView(UpdateView):
     def get_success_url(self):
         return reverse('blog:detail', args=[self.kwargs.get('pk')])
 
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['title'] = f'Редактирование записи блога {data["object"].title}'
+        return data
+
 
 class BlogEntryDeleteView(DeleteView):
     model = BlogEntry
     success_url = reverse_lazy('blog:list')
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['title'] = f'Удаление записи блога {data["object"].title}'
+        return data
