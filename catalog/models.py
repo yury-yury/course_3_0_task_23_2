@@ -20,11 +20,11 @@ class Category(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='product', default="product/default.jpg")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    price = models.DecimalField(decimal_places=2, max_digits=12)
+    name = models.CharField(max_length=200, verbose_name='Название')
+    description = models.TextField(blank=True, verbose_name='Описание')
+    image = models.ImageField(upload_to='product', default="product/default.jpg", verbose_name='Изображение')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
+    price = models.DecimalField(decimal_places=2, max_digits=12, verbose_name='Цена')
     created_at = models.DateField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateField(auto_now=True, verbose_name="Дата последнего обновления")
 

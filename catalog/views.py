@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
+from catalog.forms import ProductForm
 from catalog.models import Product, Contact
 
 ITEM_ON_PAGE = 4
@@ -22,7 +23,7 @@ def contact(request):
 
 class ProductCreateView(CreateView):
     model = Product
-    fields = ('name', 'description', 'image', 'category', 'price')
+    form_class = ProductForm
     success_url = reverse_lazy('catalog:catalog')
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -52,14 +53,14 @@ class ProductDetailView(DetailView):
 
 class ProductUpdateView(UpdateView):
     model = Product
-    fields = ('name', 'description', 'image', 'category', 'price')
+    form_class = ProductForm
 
     def get_success_url(self):
         return reverse('catalog:product', args=[self.kwargs.get('pk')])
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
-        data['title'] = f'Обновление карточки продукта {data["object"].name}'
+        data['title'] = f'Обновление карточки товара {data["object"].name}'
         return data
 
 
