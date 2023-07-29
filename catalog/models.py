@@ -66,3 +66,21 @@ class Contact(models.Model):
 
     def __str__(self) -> str:
         return f"{self.country} ({self.address})"
+
+
+class Version(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
+    num_version = models.IntegerField(verbose_name='Номер версии товара')
+    title_version = models.CharField(max_length=150, verbose_name='Название версии')
+    is_active = models.BooleanField(default=False, verbose_name='Признак активной версии')
+
+    class Meta:
+        """
+        The Meta class contains the common name of the model instance in the singular and plural used
+        in the administration panel.
+        """
+        verbose_name: str = "Версия"
+        verbose_name_plural: str = "Версии"
+
+    def __str__(self) -> str:
+        return f"Version {self.product} ({self.num_version})"

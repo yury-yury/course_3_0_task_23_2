@@ -10,29 +10,29 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name="blog",
+            model_name="blogentry",
             name="content",
             field=models.CharField(max_length=250, verbose_name="Содержание"),
         ),
         migrations.AlterField(
-            model_name="blog",
+            model_name="blogentry",
             name="preview",
             field=models.ImageField(
                 blank=True, upload_to="blog", verbose_name="Превью"
             ),
         ),
         migrations.AlterField(
-            model_name="blog",
+            model_name="blogentry",
             name="published",
             field=models.BooleanField(default=True, verbose_name="Признак публикации"),
         ),
         migrations.AlterField(
-            model_name="blog",
+            model_name="blogentry",
             name="title",
             field=models.CharField(max_length=100, verbose_name="Заголовок"),
         ),
         migrations.AlterField(
-            model_name="blog",
+            model_name="blogentry",
             name="views_count",
             field=models.IntegerField(default=0),
         ),
