@@ -22,6 +22,11 @@
                         <li>Категория: {{ item.category }}</li>
                         <li>Описание: {{ item.description|truncatechars:100 }}</li>
                         <li>Цена: {{item.price }}</li>
+                        {% for ver in item.version_set.all %}
+                            {% if ver.active %}
+                                <li>Версия: {{ver.title_version }}</li>
+                            {% endif %}
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="d-flex justify-content-between align-items-center">

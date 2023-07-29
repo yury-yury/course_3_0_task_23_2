@@ -1,10 +1,12 @@
 from typing import Dict, Any
+
+from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from catalog.forms import ProductForm
-from catalog.models import Product, Contact
+from catalog.forms import ProductForm, VersionForm
+from catalog.models import Product, Contact, Version
 
 ITEM_ON_PAGE = 4
 
@@ -56,12 +58,28 @@ class ProductUpdateView(UpdateView):
     form_class = ProductForm
 
     def get_success_url(self):
-        return reverse('catalog:product', args=[self.kwargs.get('pk')])
+        return reverse('catalog:update', args=[self.kwargs.get('pk')])
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
+
+        version_formset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+        if self.request.method == 'POST':
+            data['formset'] = version_formset(self.request.POST, instance=self.object)
+        else:
+            data['formset'] = version_formset(instance=self.object)
         data['title'] = f'Обновление карточки товара {data["object"].name}'
+
         return data
+
+    def form_valid(self, form):
+        formset = self.get_context_data()['formset']
+        self.object = form.save()
+        if formset.is_valid():
+            formset.instance = self.object
+            formset.save()
+        return super().form_valid(form)
+
 
 
 class ProductDeleteView(DeleteView):

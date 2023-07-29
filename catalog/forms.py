@@ -1,6 +1,6 @@
 from django import forms
 
-from catalog.models import Product
+from catalog.models import Product, Version
 
 
 class ProductForm(forms.ModelForm):
@@ -9,6 +9,11 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'description', 'image', 'category', 'price']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
     def clean_name(self):
         cleaned_data = self.cleaned_data.get('name')
@@ -27,3 +32,31 @@ class ProductForm(forms.ModelForm):
                 raise forms.ValidationError('Поле описание содержит запрещенные слова.')
 
         return cleaned_data
+
+
+class VersionForm(forms.ModelForm):
+
+    class Meta:
+        model = Version
+        fields = ('num_version', 'title_version', 'active')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            if isinstance(field, forms.fields.BooleanField):
+                field.widget.attrs['class'] = 'form-check-input'
+            else:
+                field.widget.attrs['class'] = 'form-control'
+
+    # def clean_active(self):
+    #     cleaned_data = self.cleaned_data.get('active')
+    #     print(cleaned_data)
+    #
+    #     if cleaned_data == True:
+    #         inst_list = Version.objects.filter(product=) #.filter(active=True)
+    #         print(self.cleaned_data.get('product'))
+    #         print(len(inst_list))
+    #         if len(inst_list) > 0:
+    #             raise forms.ValidationError('Только одна версия товара может быть отмечена как текущая')
+    #
+    #     return cleaned_data

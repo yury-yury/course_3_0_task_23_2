@@ -72,7 +72,7 @@ class Version(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='Товар')
     num_version = models.IntegerField(verbose_name='Номер версии товара')
     title_version = models.CharField(max_length=150, verbose_name='Название версии')
-    is_active = models.BooleanField(default=False, verbose_name='Признак активной версии')
+    active = models.BooleanField(default=False, verbose_name='Признак активной версии')
 
     class Meta:
         """

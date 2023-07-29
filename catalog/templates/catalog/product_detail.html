@@ -40,6 +40,14 @@
                             <td class="w-25">Обновлен</td>
                             <td>{{ object.updated_at }}</td>
                         </tr>
+                        <tr>
+                            <td class="w-25">Версии товара</td>
+                            {% for version in object.version_set.all %}
+                            <td>{{ version.num_version }} ({{ version.title_version }}) активная - {{ version.active }}</td>
+                                <tr></tr>
+                                <td class="w-25"></td>
+                            {% endfor %}
+                        </tr>
                     </table>
                 </div>
             </div>
