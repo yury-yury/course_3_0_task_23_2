@@ -1,5 +1,5 @@
 from typing import Dict, Any
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
@@ -23,15 +23,23 @@ def contact(request):
     return render(request, 'catalog/contact.html', context=data)
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:catalog')
+    raise_exception = True
 
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(object_list=None, **kwargs)
         data['title'] = "Создание новой карточки товара."
         return data
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+
+        return super().form_valid(form)
 
 
 class ProductListView(ListView):
@@ -47,15 +55,17 @@ class ProductListView(ListView):
 class ProductDetailView(DetailView):
     model = Product
 
+
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         data['title'] = f'Детальный просмотр продукта {data["object"].name}'
         return data
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
+    raise_exception = True
 
     def get_success_url(self):
         return reverse('catalog:update', args=[self.kwargs.get('pk')])
@@ -78,13 +88,19 @@ class ProductUpdateView(UpdateView):
         if formset.is_valid():
             formset.instance = self.object
             formset.save()
+
+            self.object.owner = self.request.user
+            self.object.save()
+
+            return super().form_valid(form)
         return super().form_valid(form)
 
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:catalog')
+    raise_exception = True
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)

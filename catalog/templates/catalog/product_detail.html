@@ -41,6 +41,10 @@
                             <td>{{ object.updated_at }}</td>
                         </tr>
                         <tr>
+                            <td class="w-25">Владелец карточки</td>
+                            <td>{{ object.owner }}</td>
+                        </tr>
+                        <tr>
                             <td class="w-25">Версии товара</td>
                             {% for version in object.version_set.all %}
                             <td>{{ version.num_version }} ({{ version.title_version }}) активная - {{ version.active }}</td>

@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from users.models import User
+
 
 class Category(models.Model):
     name = models.CharField(max_length=150)
@@ -27,6 +29,7 @@ class Product(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=12, verbose_name='Цена')
     created_at = models.DateField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateField(auto_now=True, verbose_name="Дата последнего обновления")
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Создатель карточки')
 
     def __str__(self) -> str:
         return f"{self.name}"

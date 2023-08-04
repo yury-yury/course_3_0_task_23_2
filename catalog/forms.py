@@ -7,7 +7,10 @@ class StyleMixinForm:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
+            if field_name not in ['active', ]:
+                field.widget.attrs['class'] = 'form-control'
+            else:
+                field.widget.attrs['class'] = 'form-check-input'
 
 
 class ProductForm(StyleMixinForm, forms.ModelForm):
