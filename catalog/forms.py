@@ -3,17 +3,19 @@ from django import forms
 from catalog.models import Product, Version
 
 
-class ProductForm(forms.ModelForm):
+class StyleMixinForm:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
+
+class ProductForm(StyleMixinForm, forms.ModelForm):
     forbidden_words: list = ['казино', 'криптовалюта', 'крипта', 'биржа',
                              'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
     class Meta:
         model = Product
         fields = ['name', 'description', 'image', 'category', 'price']
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            field.widget.attrs['class'] = 'form-control'
 
     def clean_name(self):
         cleaned_data = self.cleaned_data.get('name')
@@ -34,19 +36,12 @@ class ProductForm(forms.ModelForm):
         return cleaned_data
 
 
-class VersionForm(forms.ModelForm):
+class VersionForm(StyleMixinForm, forms.ModelForm):
 
     class Meta:
         model = Version
         fields = ('num_version', 'title_version', 'active')
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            if isinstance(field, forms.fields.BooleanField):
-                field.widget.attrs['class'] = 'form-check-input'
-            else:
-                field.widget.attrs['class'] = 'form-control'
 
     # def clean_active(self):
     #     cleaned_data = self.cleaned_data.get('active')
