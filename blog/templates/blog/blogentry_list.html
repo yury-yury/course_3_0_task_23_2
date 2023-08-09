@@ -23,8 +23,10 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="btn-group">
                             <a href="{% url 'blog:detail' item.id %}" class="btn btn-sm btn-outline-secondary">Подробно</a>
+                            {% if 'content_managers' in user_groups %}
                             <a href="{% url 'blog:update' item.id %}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
                             <a href="{% url 'blog:delete' item.id %}" class="btn btn-sm btn-outline-secondary">Удалить</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

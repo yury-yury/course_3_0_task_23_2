@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.core.mail import send_mail
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
@@ -41,11 +42,16 @@ class BlogEntryListView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(object_list=None, **kwargs)
         data['title'] = f"Список записей блога, стр. {data['page_obj'].number} из {data['page_obj'].paginator.num_pages}"
+        data['user_groups'] = [i['name'] for i in self.request.user.groups.all().values()]
+        print(data['user_groups'])
         return data
 
 
 class BlogEntryDetailView(DetailView):
     model = BlogEntry
+
+    def test_func(self):
+        return self.request.user.has_perm('')
 
     def get_object(self, queryset=None) -> BlogEntry:
         self.object = super().get_object(queryset)
@@ -64,9 +70,13 @@ class BlogEntryDetailView(DetailView):
         return data
 
 
-class BlogEntryUpdateView(UpdateView):
+class BlogEntryUpdateView(UserPassesTestMixin, UpdateView):
     model = BlogEntry
     fields = ('title', 'content', 'preview', 'published')
+
+    def test_func(self):
+        print(self.request.user.groups.values())
+        return self.request.user.groups.filter(name='content_managers').exists()
 
     def form_valid(self, form):
         if form.is_valid:
@@ -84,9 +94,12 @@ class BlogEntryUpdateView(UpdateView):
         return data
 
 
-class BlogEntryDeleteView(DeleteView):
+class BlogEntryDeleteView(UserPassesTestMixin, DeleteView):
     model = BlogEntry
     success_url = reverse_lazy('blog:list')
+
+    def test_func(self):
+        return self.request.user.groups.filter(name='content_managers').exists()
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)

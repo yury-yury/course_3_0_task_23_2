@@ -37,8 +37,12 @@
                         <div class="btn-group">
                             <a href="{% url 'catalog:product' item.id %}" class="btn btn-sm btn-outline-secondary">Подробно</a>
                         {% if request.user.is_authenticated %}
+                            {% if perms.catalog.set_published %}
+                            <a href="{% url 'catalog:update_for_moderator' item.id %}" class="btn btn-sm btn-outline-secondary">Модерировать</a>
+                            {% elif request.user == item.owner %}
                             <a href="{% url 'catalog:update' item.id %}" class="btn btn-sm btn-outline-secondary">Редактировать</a>
                             <a href="{% url 'catalog:delete' item.id %}" class="btn btn-sm btn-outline-secondary">Удалить</a>
+                            {% endif %}
                         {% endif %}
                         </div>
 

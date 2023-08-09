@@ -30,6 +30,7 @@ class Product(models.Model):
     created_at = models.DateField(auto_now_add=True, verbose_name="Дата создания")
     updated_at = models.DateField(auto_now=True, verbose_name="Дата последнего обновления")
     owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Создатель карточки')
+    is_published = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -52,6 +53,8 @@ class Product(models.Model):
         verbose_name: str = "Продукт"
         verbose_name_plural: str = "Продукты"
         ordering = ["-created_at"]
+
+        permissions = [('set_published', 'Can publish product')]
 
 
 class Contact(models.Model):

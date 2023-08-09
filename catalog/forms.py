@@ -3,19 +3,22 @@ from django import forms
 from catalog.models import Product, Version
 
 
+FORBIDDEN_WORDS: list = ['казино', 'криптовалюта', 'крипта', 'биржа',
+                         'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+
+
 class StyleMixinForm:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            if field_name not in ['active', ]:
+            if field_name not in ['active', 'is_published']:
                 field.widget.attrs['class'] = 'form-control'
             else:
                 field.widget.attrs['class'] = 'form-check-input'
 
 
 class ProductForm(StyleMixinForm, forms.ModelForm):
-    forbidden_words: list = ['казино', 'криптовалюта', 'крипта', 'биржа',
-                             'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
+
     class Meta:
         model = Product
         fields = ['name', 'description', 'image', 'category', 'price']
@@ -23,7 +26,7 @@ class ProductForm(StyleMixinForm, forms.ModelForm):
     def clean_name(self):
         cleaned_data = self.cleaned_data.get('name')
 
-        for f_word in self.forbidden_words:
+        for f_word in FORBIDDEN_WORDS:
             if f_word in cleaned_data:
                 raise forms.ValidationError('Поле название содержит запрещенные слова.')
 
@@ -32,7 +35,23 @@ class ProductForm(StyleMixinForm, forms.ModelForm):
     def clean_description(self):
         cleaned_data = self.cleaned_data.get('description')
 
-        for f_word in self.forbidden_words:
+        for f_word in FORBIDDEN_WORDS:
+            if f_word in cleaned_data:
+                raise forms.ValidationError('Поле описание содержит запрещенные слова.')
+
+        return cleaned_data
+
+
+class ProductFormForModerator(StyleMixinForm, forms.ModelForm):
+
+    class Meta:
+        model = Product
+        fields = ['description', 'category', 'is_published']
+
+    def clean_description(self):
+        cleaned_data = self.cleaned_data.get('description')
+
+        for f_word in FORBIDDEN_WORDS:
             if f_word in cleaned_data:
                 raise forms.ValidationError('Поле описание содержит запрещенные слова.')
 

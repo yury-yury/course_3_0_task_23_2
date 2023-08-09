@@ -1,11 +1,11 @@
 from typing import Dict, Any
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductFormForModerator
 from catalog.models import Product, Contact, Version
 
 ITEM_ON_PAGE = 4
@@ -62,10 +62,13 @@ class ProductDetailView(DetailView):
         return data
 
 
-class ProductUpdateView(LoginRequiredMixin, UpdateView):
+class ProductUpdateView(UserPassesTestMixin, UpdateView):
     model = Product
     form_class = ProductForm
     raise_exception = True
+
+    def test_func(self):
+        return self.request.user == self.get_object().owner
 
     def get_success_url(self):
         return reverse('catalog:update', args=[self.kwargs.get('pk')])
@@ -95,6 +98,34 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
             return super().form_valid(form)
         return super().form_valid(form)
 
+class ProductUpdateForModeratorView(PermissionRequiredMixin, UpdateView):
+    model = Product
+    form_class = ProductFormForModerator
+    raise_exception = True
+    permission_required = 'catalog.set_published'
+
+    def get_success_url(self):
+        return reverse('catalog:catalog')
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+
+        data['title'] = f'Модерация карточки товара {data["object"].name}'
+
+        return data
+
+    # def form_valid(self, form):
+    #     formset = self.get_context_data()['formset']
+    #     self.object = form.save()
+    #     if formset.is_valid():
+    #         formset.instance = self.object
+    #         formset.save()
+    #
+    #         self.object.owner = self.request.user
+    #         self.object.save()
+    #
+    #         return super().form_valid(form)
+    #     return super().form_valid(form)
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
