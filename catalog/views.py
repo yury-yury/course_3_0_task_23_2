@@ -1,3 +1,4 @@
+# noinspection PyPackageRequirements
 from typing import Dict, Any
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.forms import inlineformset_factory
